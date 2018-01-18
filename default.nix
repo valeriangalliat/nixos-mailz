@@ -106,7 +106,25 @@ in
 
       users = mkOption {
         default = { };
-        type = types.loaOf types.optionSet;
+        type = types.loaOf (types.submodule {
+          options = {
+            password = mkOption {
+              type = types.str;
+              description = ''
+                The user password, generated with
+                <literal>smtpctl encrypt</literal>.
+              '';
+            };
+
+            aliases = mkOption {
+              type = types.listOf types.str;
+              default = [ ];
+              example = [ "postmaster" ];
+              description = "A list of aliases for this user.";
+            };
+          };
+        });
+
         description = ''
           Attribute set of users.
         '';
